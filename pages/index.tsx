@@ -2,7 +2,7 @@ import React, { createElement, useEffect, useRef } from "react";
 import Head from "next/head";
 import { Helmet } from "react-helmet";
 
-import Form from "../components/Form.tsx";
+import Form from "../components/Form";
 
 const Dashboard = () => {
   const path = useRef();
@@ -71,7 +71,8 @@ const Dashboard = () => {
     return obj;
   };
 
-  const appendTags = (meta) => {
+  const appendTags = (e, meta) => {
+    e.preventDefault();
     const tags = [];
 
     const generatedKeys = generateOpenGraphKeys(meta);
@@ -99,7 +100,7 @@ const Dashboard = () => {
 
     tags.push(openGraphUrlTag);
 
-    return <Helmet>{tags}</Helmet>;
+    // return <Helmet>{tags}</Helmet>;
   };
 
   return (
@@ -117,7 +118,7 @@ const Dashboard = () => {
             inject into the head of your document.
           </p>
         </div>
-        <Form />
+        <Form appendTags={appendTags} />
       </section>
     </>
   );

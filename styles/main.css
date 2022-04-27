@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap");
 
 body {
-    background-color: #f1f1f1;
+    background-color: #F4F5F4;
     color: #2c314a;
     font-family: "Inter", sans-serif;
     min-height: 100vh;
@@ -9,14 +9,20 @@ body {
     justify-content: center;
     align-items: center;
     -webkit-font-smoothing: antialiased;
+    margin: 0;
 }
+
+ p {
+     margin: 0;
+     font-size: .9rem;
+ }
 
 .container {
     background-color: #fffef5;
     border-radius: 0.5rem;
     width: 550px;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    padding: 1rem;
+    padding: 1rem 1.5rem;
 }
 
 h1 {
@@ -24,7 +30,7 @@ h1 {
     margin: 16px 0;
     font-size: 2rem;
     letter-spacing: -0.1rem;
-    color: #5729f7;
+    color: #2D3047;
 }
 
 .description {
@@ -32,14 +38,6 @@ h1 {
     text-align: center;
     max-width: 450px;
     margin: 0 auto;
-}
-
-.description p {
-    font-size: .9rem;
-}
-
-.container form {
-    padding: 0 16px;
 }
 
 .form-item {
@@ -60,6 +58,7 @@ h1 {
     background-color: transparent;
     border: inherit;
     border: 1px solid #d6dbe7;
+    font-family: "Inter", sans-serif;
 }
 
 .form-item > .form-group {
@@ -68,9 +67,9 @@ h1 {
     gap: 16px;
 }
 
-.form-item input[type="submit"] {
-    background-color: #5729f7;
-    color: #fff;
+.form-item .form-submit {
+    background-color: #FFFD82;
+    color: #2c314a;
     font-weight: 700;
     font-size: 1rem;
     padding: 0.75rem 0;
@@ -78,11 +77,22 @@ h1 {
     border: inherit;
     transition: 0.25s ease;
     letter-spacing: -0.05rem;
+    margin: 0;
 }
 
-/* .form-item input[type="submit"]:hover { */
-    /*   background-color: #734cf8; */
-/* } */
+.form-item input[disabled] {
+    background-color: #E6E6E6;
+    color: #2c314a;
+    cursor: initial;
+    pointer-events: none
+}
+
+form button[disabled] {
+    cursor: initial;
+    pointer-events: none;
+    color: #2c314a;
+    background-color: #E6E6E6;
+}
 
 form button {
     display: block;
@@ -90,15 +100,29 @@ form button {
     cursor: pointer;
     background-color: transparent;
     border: inherit;
-    color: #5729f7;
+    background-color: #FFFD82;
+    color: #2c314a;
+    padding: .5rem 1rem;
     font-weight: 600;
-    padding: 0;
+    border-radius: .5rem;
 }
 
 .tag-container {
-    background-color: #f3f3f3;
-    padding: 2rem;
+    background-color: transparent;
+    padding: 1.5rem 1rem;
     border-radius: 0.5rem;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    min-height: 28px;
+}
+
+.tag {
+    background: #F4F5F4;
+    width: auto;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    font-size: .85rem;
+    font-weight: 600;
+    margin: 8px;
 }

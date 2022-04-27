@@ -1,52 +1,74 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
+import Option from "./Option";
+import Tag from "./Tag";
+import { initialState, reducer } from "../reducers/form";
+import { formatValue } from "../helpers/formatValue";
 
 const Form = ({ appendTags }) => {
-  const [userInput, setUserInput] = useState({
-    title: "",
-    description: "",
-    tags: [],
-  });
 
-  const { title, description, tags } = userInput;
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { title, description, property, content } = state;
+
+  const initialValue = state.options[0];
+  const defaultValue = !property ? formatValue(initialValue, true) : property;
+
+  const isDisabled = defaultValue && content
+  const isSubmitDisabled = title && description && state.tags.length
+
+  const options = state.options.map((option) => (
+    <Option key={option} option={option} />
+  ));
+  const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} />);
 
   return (
     <form onSubmit={appendTags}>
       <div className="form-item">
         <label htmlFor="title">Title</label>
-        <input 
-          id="title" 
-          name="title" 
-          onChange={(e) => console.log(e)} 
-          type="text" 
+        <input
+          id="title"
+          name="title"
+          onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+          type="text"
+          value={title}
         />
       </div>
       <div className="form-item">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="title">Description</label>
         <input
           id="description"
           name="description"
-          onChange={(e) => console.log(e)}
+          onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
           type="text"
+          value={description}
         />
       </div>
       <div className="form-item">
         <label>Create Custom OG Tag:</label>
         <div className="form-group">
-          <select id="create">
-            <option value="og:audio">Audio</option>
-            <option value="og:description">Description</option>
-            <option value="og:determiner">Determiner</option>
-            <option value="og:locale">Locale</option>
-            <option value="og:site_name">Site Name</option>
-            <option value="og:video">Video</option>
+          <select
+            id="property"
+            name="property"
+            onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+            value={defaultValue}
+          >
+            <>{options}</>
           </select>
-          <input type="text" id="property" placeholder="Value that will be set as the property to the tag." />
+          <input
+            id="content"
+            name="content"
+            onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+            placeholder="Value that will be set as the content of the tag."
+            type="text"
+            value={content}
+          />
         </div>
       </div>
-      <div className="tag-container"></div>
-      <button>Add OG Tag</button>
+      <div className="tag-container">{tags}</div>
+      <button onClick={(e) => dispatch({ type: 'ADD_TAG', payload: { e, property: defaultValue, content} })} disabled={!isDisabled}>
+        Add OG Tag
+      </button>
       <div className="form-item">
-        <input type="submit" value="Try it out!" />
+        <input type="submit" value="Try it out!" className="form-submit" disabled={!isSubmitDisabled} />
       </div>
     </form>
   );
