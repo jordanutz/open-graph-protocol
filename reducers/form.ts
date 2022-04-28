@@ -1,3 +1,4 @@
+import { appendTags } from "../helpers/appendTags";
 import { filterOptions } from "../helpers/filterOptions";
 import { formatValue } from "../helpers/formatValue";
 
@@ -15,18 +16,16 @@ export const initialState = {
     "Type",
     "Video",
   ],
-  setInitialProperty: function (filtered) {
-    return filtered ? filtered[0] : this.options[0];
-  },
   property: "",
   content: "",
+  hasSubmit: false
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD_TAG":
+    case "ADD_TAG": {
       const { payload } = action;
-      const { e, property, content } = payload;
+      const { property, content } = payload;
 
       payload.e.preventDefault();
 
@@ -46,18 +45,54 @@ export const reducer = (state, action) => {
         property: initialValue,
         content: "",
       };
-      break;
+    } break;
 
-    case "HANDLE_USER_INPUT":
+    case "HANDLE_USER_INPUT": {
       const { event } = action;
       const { name, value } = event.target;
 
       return { ...state, [name]: value };
-      break;
+    } break;
 
-    case "SUBMIT_FORM":
-      return { ...state };
-      break;
+    case "HANDLE_SUBMIT": {
+      const { event } = action;
+      const { tags, title, description } = state;
+
+      event.preventDefault();
+
+        /* Meta:
+        Loop through array of tags. Property of each tag needs to be set as the 
+        key of the meta object and value needs to be set accordingly. 
+
+        title: "Jordans Grid Container",
+        description: "Jordan's Description",
+        og:title: "I will overwrite the title"
+      */
+
+      const setTags = (tags) => {
+        let metaTags = {};
+
+        tags.forEach(tag => {
+          const { property, content } = tag;
+          metaTags = { ...metaTags, [property]: content }
+        })
+
+        return metaTags;
+      };
+
+      const meta = {
+        title,
+        description,
+        ...setTags(tags),
+      };
+
+      appendTags(meta)
+
+      return { 
+        ...state, 
+        hasSubmit: true
+      };
+    } break;
 
     default:
       return { ...state };

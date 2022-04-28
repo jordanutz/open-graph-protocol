@@ -56,7 +56,6 @@ h1 {
     padding: 0.5rem;
     margin-top: 8px;
     background-color: transparent;
-    border: inherit;
     border: 1px solid #d6dbe7;
     font-family: "Inter", sans-serif;
 }

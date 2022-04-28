@@ -4,16 +4,15 @@ import Tag from "./Tag";
 import { initialState, reducer } from "../reducers/form";
 import { formatValue } from "../helpers/formatValue";
 
-const Form = ({ appendTags }) => {
-
+const Form = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { title, description, property, content } = state;
+  const { title, description, property, content, hasSubmit } = state;
 
   const initialValue = state.options[0];
   const defaultValue = !property ? formatValue(initialValue, true) : property;
 
-  const isDisabled = defaultValue && content
-  const isSubmitDisabled = title && description && state.tags.length
+  const isAddDisabled = !(defaultValue && content) || hasSubmit;
+  const isSubmitDisabled = !(title && description && state.tags.length) || hasSubmit;
 
   const options = state.options.map((option) => (
     <Option key={option} option={option} />
@@ -21,15 +20,16 @@ const Form = ({ appendTags }) => {
   const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} />);
 
   return (
-    <form onSubmit={appendTags}>
+    <form onSubmit={(event) => dispatch({ type: 'HANDLE_SUBMIT', event })}>
       <div className="form-item">
         <label htmlFor="title">Title</label>
         <input
           id="title"
           name="title"
-          onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
           type="text"
           value={title}
+          disabled={hasSubmit}
         />
       </div>
       <div className="form-item">
@@ -37,9 +37,10 @@ const Form = ({ appendTags }) => {
         <input
           id="description"
           name="description"
-          onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
           type="text"
           value={description}
+          disabled={hasSubmit}
         />
       </div>
       <div className="form-item">
@@ -48,15 +49,16 @@ const Form = ({ appendTags }) => {
           <select
             id="property"
             name="property"
-            onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
             value={defaultValue}
+            disabled={hasSubmit}
           >
             <>{options}</>
           </select>
           <input
             id="content"
             name="content"
-            onChange={(event) => dispatch({ type: 'HANDLE_USER_INPUT', event })}
+            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
             placeholder="Value that will be set as the content of the tag."
             type="text"
             value={content}
@@ -64,11 +66,24 @@ const Form = ({ appendTags }) => {
         </div>
       </div>
       <div className="tag-container">{tags}</div>
-      <button onClick={(e) => dispatch({ type: 'ADD_TAG', payload: { e, property: defaultValue, content} })} disabled={!isDisabled}>
+      <button
+        onClick={(e) =>
+          dispatch({
+            type: "ADD_TAG",
+            payload: { e, property: defaultValue, content },
+          })
+        }
+        disabled={isAddDisabled}
+      >
         Add OG Tag
       </button>
       <div className="form-item">
-        <input type="submit" value="Try it out!" className="form-submit" disabled={!isSubmitDisabled} />
+        <input
+          type="submit"
+          value="Try it out!"
+          className="form-submit"
+          disabled={isSubmitDisabled}
+        />
       </div>
     </form>
   );
