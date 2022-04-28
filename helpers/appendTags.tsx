@@ -1,10 +1,11 @@
-import React, { createElement } from "react";
-import { Helmet } from "react-helmet";
+import { createElement } from "react";
 import { formatValue } from "./formatValue";
+
+const trimKey = (key, value) => `${key}-${value}`.replace(/\s+/g, '');
 
 const assembleProps = (key, value) => {
   const isOpenGraph = key.includes("og:");
-  const trimmed = `${key}-${value}`.replace(/\s+/g, '');
+  const trimmed = trimKey(key, value);
 
   const props = {
     key: trimmed,
@@ -22,9 +23,12 @@ const assembleProps = (key, value) => {
 
 const renderTag = (key, value) => {
   const isTitle = key === "title";
+  const titleProps = {
+    key: trimKey(key, value)
+  };
 
   const type = isTitle ? "title" : "meta";
-  const props = !isTitle && { ...assembleProps(key, value) };
+  const props = !isTitle ? { ...assembleProps(key, value) } : { ...titleProps };
   const children = isTitle && value;
 
   return createElement(type, props, children);
@@ -51,8 +55,6 @@ const generateOpenGraphKeys = (meta) => {
 
     obj[openGraphKey] = meta[key];
   });
-
-  console.log(obj, 'obj')
 
   return obj;
 };
@@ -81,9 +83,10 @@ export const appendTags = (meta) => {
     tags.push(openGraphImageTag);
   }
 
+  const openGraphTypeTag = renderTag('og:type', 'website');
   const openGraphUrlTag = renderTag("og:url", "https://www.test.com");
 
-  tags.push(openGraphUrlTag);
+  tags.push(openGraphUrlTag, openGraphTypeTag);
 
-  return <Helmet>{tags}</Helmet>;
+  return tags;
 };

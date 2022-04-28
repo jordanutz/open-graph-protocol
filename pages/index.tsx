@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Form from "../components/Form";
 
-const Dashboard = () => {
+const App = () => {
   return (
     <>
       <Head>
@@ -20,8 +20,11 @@ const Dashboard = () => {
         </div>
         <Form />
       </section>
+      <section className="container">
+        <h2>Generated Tags</h2>
+      </section>
     </>
   );
 };
 
-export default Dashboard;
+export default App;

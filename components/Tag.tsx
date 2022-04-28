@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Tag = ({ property, content }) => (
+const Tag = ({ property }) => (
     <span className="tag">
         {property}
     </span>

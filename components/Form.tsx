@@ -80,7 +80,7 @@ const Form = () => {
       <div className="form-item">
         <input
           type="submit"
-          value="Try it out!"
+          value="Generate Tags"
           className="form-submit"
           disabled={isSubmitDisabled}
         />
