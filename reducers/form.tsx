@@ -1,4 +1,5 @@
 import ReactDOMServer from 'react-dom/server'
+
 import { createTags } from "../helpers/createTags";
 import { filterOptions } from "../helpers/filterOptions";
 import { formatValue } from "../helpers/formatValue";
@@ -6,6 +7,7 @@ import { formatValue } from "../helpers/formatValue";
 export const initialState = {
   title: "",
   description: "",
+  url: "",
   tags: [],
   options: [
     "Audio",
@@ -15,7 +17,6 @@ export const initialState = {
     "Locale",
     "Site Name",
     "Title",
-    "URL",
     "Video",
   ],
   property: "",
@@ -59,7 +60,7 @@ export const reducer = (state, action) => {
 
     case "HANDLE_SUBMIT": {
       const { event } = action;
-      const { tags, title, description } = state;
+      const { tags, title, description, url } = state;
 
       event.preventDefault();
 
@@ -68,7 +69,8 @@ export const reducer = (state, action) => {
         key of the meta object and value needs to be set accordingly. 
 
         title: "Jordans Grid Container",
-        description: "Jordan's Description",
+        description: "Jordan's Descripton",
+        url: "https://www.nintendo.com",
         og:title: "I will overwrite the title"
       */
 
@@ -86,10 +88,11 @@ export const reducer = (state, action) => {
       const meta = {
         title,
         description,
+        url,
         ...setTags(tags),
       };
 
-      const generatedTags = createTags(meta).map(tag => ReactDOMServer.renderToString(tag)).toString().replace(/,/g, '\n')
+      const generatedTags = createTags(meta).map(tag => ReactDOMServer.renderToString(tag)).toString().replace(/,/g, '\n');
 
       return { 
         ...state, 
@@ -98,6 +101,12 @@ export const reducer = (state, action) => {
       };
     } break;
 
+    case "HANDLE_RESET": {
+      return {
+        ...state,
+        ...initialState
+      };
+    } break;
     default:
       return { ...state };
   }

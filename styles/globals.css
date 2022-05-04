@@ -1,8 +1,8 @@
 :root {
     --primary: #9147ff;
-    --accent: #bf94ff;
-    --font: #1b1d2b;
-    --bg-primary: rgb(0 0 0 / 10%);
+    --accent: #b482ff;
+    --font: #373b52;
+    --bg-primary: #b482ff3d;
     --bg-card: #fafafa;
-    --bg-disabled: #0b053119;
+    --bg-disabled: #e9eef1;
 }

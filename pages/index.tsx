@@ -29,7 +29,7 @@ const App = () => {
         <Form state={state} dispatch={dispatch} />
       </section>
       <div className="content">
-        <Preview />
+        <Preview state={state} />
         <Generated state={state} />
       </div>
     </>

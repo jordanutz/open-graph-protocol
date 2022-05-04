@@ -68,8 +68,9 @@ export const createTags = (meta) => {
 
   Object.keys(generatedKeys).forEach((key) => {
     const value = generatedKeys[key];
+    const isUrl = key === "url";
 
-    if (value === "") return;
+    if (value === "" || isUrl) return;
 
     const tag = renderTag(key, value);
     tags.push(tag);
@@ -85,9 +86,10 @@ export const createTags = (meta) => {
   }
 
   const openGraphTypeTag = renderTag('og:type', 'website');
-  const openGraphUrlTag = renderTag("og:url", "https://www.test.com");
 
-  tags.push(openGraphUrlTag, openGraphTypeTag);
+  tags.push(openGraphTypeTag);
+
+  console.log(tags, 'tags')
 
   return tags;
 };

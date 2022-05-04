@@ -4,12 +4,12 @@ body {
     background-color: var(--bg-primary);
     color: var(--font);
     font-family: "Inter", sans-serif;
-    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     -webkit-font-smoothing: antialiased;
     margin: 0;
+    min-height: 100vh;
 }
 
 body > div {
@@ -62,6 +62,26 @@ h1, h2 {
     margin-bottom: 24px;
 }
 
+.container.container--skeleton h3, 
+.container.container--skeleton figcaption {
+    background-color: var(--bg-disabled);
+    background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    background-size: 40px 100%;
+    background-repeat: no-repeat;
+    background-position: left -40px top 0;
+}
+
+.container.container--skeleton h3 {
+    min-height: 28px;
+    border-radius: 4px;
+    display: block;
+}
+
+.container.container--skeleton figcaption {
+    min-height: 72px;
+    border-radius: 4px;
+}
+
 .description {
     padding: 0 16px;
     text-align: center;
@@ -101,6 +121,23 @@ h1, h2 {
     gap: 16px;
 }
 
+.form-item.form-item--submit {
+    flex-direction: row;
+    gap: 8px;
+}
+
+.form-item.form-item--submit > input:first-of-type {
+    background-color: transparent;
+    color: var(--font);
+    border: 1px solid var(--font);
+}
+
+.form-item.form-item--submit > input:first-of-type[disabled] {
+    background-color: transparent;
+    color: #c7d1d6;
+    border: 1px solid #c7d1d6;
+}
+
 .form-item .form-submit {
     background-color: var(--primary);
     color: var(--bg-card);
@@ -113,9 +150,11 @@ h1, h2 {
     letter-spacing: -0.05rem;
     margin: 0;
     transition: .2s ease;
+    flex-grow: 1;
 }
 
-.form-item input[disabled] {
+.form-item input[disabled],
+.form-item select[disabled] {
     background-color: var(--bg-disabled);
     color: #030620c5;
     cursor: initial;
@@ -133,7 +172,7 @@ form button {
 form button[disabled] {
     cursor: initial;
     pointer-events: none;
-    color: #b3b3b3;
+    color: #c7d1d6;
     background-color: transparent;
 }
 
@@ -168,7 +207,7 @@ form button {
     display: block;
     font-size: 1.5rem;
     margin-bottom: 8px;
-    color: var(--accent);
+    color: var(--primary);
 }
 
 .tag-container.tag-container--empty > p {
@@ -196,7 +235,7 @@ form button {
 .tag > svg {
     margin: 0 8px 0 0;
     font-size: 1.15rem;
-    color: var(--accent);
+    color: var(--primary);
 }
 
 .preview {
@@ -207,6 +246,10 @@ form button {
     position: relative;
     width: 100%;
     height: 175px;
+}
+
+.preview-img img {
+    object-fit: cover;
 }
 
 .preview-details h3 {

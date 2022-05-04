@@ -1,35 +1,62 @@
 import React from "react";
 import Image from "next/image";
 
-const Preview = () => {
-  return (
+import Placeholder from "../assets/default.png"
+
+const Preview = ({ state }) => {
+  const imageTag = state.tags.length && state.hasSubmit && state.tags.find(tag => tag.property === "og:image")
+  console.log(imageTag)
+
+  console.log(state)
+  const content = state.hasSubmit ? (
     <section className="container container--preview">
       <h2>Preview</h2>
       <figure className="preview">
         <div className="preview-img">
-          <Image 
-            src="https://assets.nintendo.com/image/upload/c_fill,f_auto,q_auto,w_1200/v1/ncom/en_US/games/switch/p/pokemon-unite-switch/hero"
-            alt="Pokémon announces Nintendo Switch launch date for Pokémon UNITE"
-            layout='fill'
+          <Image
+            src={imageTag ? imageTag.content : 'Image not supported.'}
+            alt={state.title}
+            layout="fill"
             unoptimized={true}
           />
         </div>
         <div className="preview-details">
-          <h3>Pokémon announces Nintendo Switch launch date for Pokémon UNITE</h3>
+          <h3>{state.title}</h3>
+          <figcaption>{state.description}</figcaption>
+          <a href={state.url} target="_blank" rel="noreferrer">
+            arstechnica.com
+          </a>
+        </div>
+      </figure>
+    </section>
+  ) : (
+    <section className="container container--preview container--skeleton">
+      <h2>Preview</h2>
+      <figure className="preview">
+        <div className="preview-img">
+          <Image
+            src={Placeholder.src}
+            alt=""
+            role="presentation"
+            layout="fill"
+          />
+        </div>
+        <div className="preview-details">
+          <h3>
+            {/* <!-- waiting for user to make submission --> */}
+          </h3>
           <figcaption>
-            The free-to-play MOBA Pokémon Unite is coming to Nintendo Switch on July 21, The Pokémon Company announced Thursday.
+             {/* <!-- waiting for user to make submission --> */}
           </figcaption>
-          <a
-            href="https://www.nintendo.com/whatsnew/detail/2021/pokemon-announces-nintendo-switch-launch-date-for-pokemon-unite/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            nintendo.com
+          <a target="_blank" rel="noreferrer">
+            {/* <!-- waiting for user to make submission --> */}
           </a>
         </div>
       </figure>
     </section>
   );
+
+  return content;
 };
 
 export default Preview;

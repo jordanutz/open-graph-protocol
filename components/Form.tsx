@@ -5,14 +5,16 @@ import { formatValue } from "../helpers/formatValue";
 import { AiOutlineTags } from "react-icons/ai";
 
 const Form = ({ state, dispatch }) => {
-  const { title, description, property, content, hasSubmit } = state;
+  const { title, description, url, property, content, hasSubmit } = state;
 
   const initialValue = state.options[0];
   const defaultValue = !property ? formatValue(initialValue, true) : property;
 
   const isAddDisabled = !(defaultValue && content) || hasSubmit;
+  const isResetDisabled =
+    !title && !description && !url && !property && !content && !state.tags.length;
   const isSubmitDisabled =
-    !(title && description && state.tags.length) || hasSubmit;
+    !(title && url && state.tags.length) || hasSubmit;
 
   const options = state.options.map((option) => (
     <Option key={option} option={option} />
@@ -20,8 +22,9 @@ const Form = ({ state, dispatch }) => {
   const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} />);
 
   const isEmpty = !state.tags.length;
-  const isEmptyModifier = isEmpty ? 'tag-container--empty' : '';
-  const hasSubmitModifier = isSubmitDisabled ? 'form--disabled' : '';
+  const isEmptyModifier = isEmpty ? "tag-container--empty" : "";
+  const hasSubmitModifier = isSubmitDisabled ? "form--disabled" : "";
+
   const tagContent = isEmpty ? (
     <>
       <AiOutlineTags />
@@ -32,7 +35,10 @@ const Form = ({ state, dispatch }) => {
   );
 
   return (
-    <form onSubmit={(event) => dispatch({ type: "HANDLE_SUBMIT", event })} className={hasSubmitModifier}>
+    <form
+      onSubmit={(event) => dispatch({ type: "HANDLE_SUBMIT", event })}
+      className={hasSubmitModifier}
+    >
       <div className="form-item">
         <label htmlFor="title">Title</label>
         <input
@@ -42,6 +48,9 @@ const Form = ({ state, dispatch }) => {
           type="text"
           value={title}
           disabled={hasSubmit}
+          maxLength={100}
+          placeholder="Enter the title of your webpage. e.g. Nintendo Switch Sports now released!"
+          required
         />
       </div>
       <div className="form-item">
@@ -53,6 +62,23 @@ const Form = ({ state, dispatch }) => {
           type="text"
           value={description}
           disabled={hasSubmit}
+          maxLength={150}
+          placeholder="Enter a description for your webpage."
+          required
+        />
+      </div>
+      <div className="form-item">
+        <label htmlFor="title">URL</label>
+        <input
+          id="url"
+          name="url"
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+          type="url"
+          value={url}
+          disabled={hasSubmit}
+          maxLength={200}
+          placeholder="https://wwww.myurl.com/"
+          required
         />
       </div>
       <div className="form-item">
@@ -90,7 +116,15 @@ const Form = ({ state, dispatch }) => {
       >
         Add OG Tag
       </button>
-      <div className="form-item">
+      <div className="form-item form-item--submit">
+        <input
+          type="button"
+          value="Clear"
+          className="form-submit"
+          disabled={isResetDisabled}
+          onClick={() => dispatch({ type: 'HANDLE_RESET' })}
+          required
+        />
         <input
           type="submit"
           value="Generate Tags"
