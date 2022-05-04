@@ -1,4 +1,5 @@
-import { appendTags } from "../helpers/appendTags";
+import ReactDOMServer from 'react-dom/server'
+import { createTags } from "../helpers/createTags";
 import { filterOptions } from "../helpers/filterOptions";
 import { formatValue } from "../helpers/formatValue";
 
@@ -14,10 +15,12 @@ export const initialState = {
     "Locale",
     "Site Name",
     "Title",
+    "URL",
     "Video",
   ],
   property: "",
   content: "",
+  generatedTags: null,
   hasSubmit: false
 };
 
@@ -86,10 +89,11 @@ export const reducer = (state, action) => {
         ...setTags(tags),
       };
 
-      appendTags(meta)
+      const generatedTags = createTags(meta).map(tag => ReactDOMServer.renderToString(tag)).toString().replace(/,/g, '\n')
 
       return { 
         ...state, 
+        generatedTags,
         hasSubmit: true
       };
     } break;

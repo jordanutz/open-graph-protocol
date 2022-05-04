@@ -3,25 +3,28 @@ import Image from "next/image";
 
 const Preview = () => {
   return (
-    <section
-      className="container container--preview"
-      style={{ marginBottom: "24px" }}
-    >
+    <section className="container container--preview">
       <h2>Preview</h2>
-
       <figure className="preview">
-        <img src="https://home.pokemon.com/assets/img/share/en/share_fb.jpg" />
+        <div className="preview-img">
+          <Image 
+            src="https://assets.nintendo.com/image/upload/c_fill,f_auto,q_auto,w_1200/v1/ncom/en_US/games/switch/p/pokemon-unite-switch/hero"
+            alt="Pokémon announces Nintendo Switch launch date for Pokémon UNITE"
+            layout='fill'
+            unoptimized={true}
+          />
+        </div>
         <div className="preview-details">
-          <h3>Pokemon Home: Price, Features & All You Need to Know</h3>
+          <h3>Pokémon announces Nintendo Switch launch date for Pokémon UNITE</h3>
           <figcaption>
-            Here&apos;s a full rundown on the Pokemon cloud storage service.
+            The free-to-play MOBA Pokémon Unite is coming to Nintendo Switch on July 21, The Pokémon Company announced Thursday.
           </figcaption>
           <a
-            href="https://www.cnet.com/tech/gaming/pokemon-home-price-features-and-everything-you-need-to-know/"
+            href="https://www.nintendo.com/whatsnew/detail/2021/pokemon-announces-nintendo-switch-launch-date-for-pokemon-unite/"
             target="_blank"
             rel="noreferrer"
           >
-            cnet.com
+            nintendo.com
           </a>
         </div>
       </figure>

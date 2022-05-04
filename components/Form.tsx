@@ -1,26 +1,38 @@
-import React, { useReducer } from "react";
+import React from "react";
 import Option from "./Option";
 import Tag from "./Tag";
-import { initialState, reducer } from "../reducers/form";
 import { formatValue } from "../helpers/formatValue";
+import { AiOutlineTags } from "react-icons/ai";
 
-const Form = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const Form = ({ state, dispatch }) => {
   const { title, description, property, content, hasSubmit } = state;
 
   const initialValue = state.options[0];
   const defaultValue = !property ? formatValue(initialValue, true) : property;
 
   const isAddDisabled = !(defaultValue && content) || hasSubmit;
-  const isSubmitDisabled = !(title && description && state.tags.length) || hasSubmit;
+  const isSubmitDisabled =
+    !(title && description && state.tags.length) || hasSubmit;
 
   const options = state.options.map((option) => (
     <Option key={option} option={option} />
   ));
   const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} />);
 
+  const isEmpty = !state.tags.length;
+  const isEmptyModifier = isEmpty ? 'tag-container--empty' : '';
+  const hasSubmitModifier = isSubmitDisabled ? 'form--disabled' : '';
+  const tagContent = isEmpty ? (
+    <>
+      <AiOutlineTags />
+      <p>You have not added any tags yet.</p>
+    </>
+  ) : (
+    tags
+  );
+
   return (
-    <form onSubmit={(event) => dispatch({ type: 'HANDLE_SUBMIT', event })}>
+    <form onSubmit={(event) => dispatch({ type: "HANDLE_SUBMIT", event })} className={hasSubmitModifier}>
       <div className="form-item">
         <label htmlFor="title">Title</label>
         <input
@@ -62,10 +74,11 @@ const Form = () => {
             placeholder="Value that will be set as the content of the tag."
             type="text"
             value={content}
+            disabled={hasSubmit}
           />
         </div>
       </div>
-      <div className="tag-container">{tags}</div>
+      <div className={`tag-container ${isEmptyModifier}`}>{tagContent}</div>
       <button
         onClick={(e) =>
           dispatch({

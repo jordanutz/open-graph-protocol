@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useReducer } from "react";
 import Head from "next/head";
 
 import Form from "../components/Form";
 import Generated from "../components/Generated";
 import Preview from "../components/Preview";
 
+import { initialState, reducer } from "../reducers/form";
+
 const App = () => {
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <>
       <Head>
@@ -21,11 +26,11 @@ const App = () => {
             inject into the head of your document. Let&apos;s give it a shot!
           </p>
         </div>
-        <Form />
+        <Form state={state} dispatch={dispatch} />
       </section>
       <div className="content">
-       <Preview />
-        <Generated />
+        <Preview />
+        <Generated state={state} />
       </div>
     </>
   );

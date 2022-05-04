@@ -10,6 +10,7 @@ const assembleProps = (key, value) => {
   const props = {
     key: trimmed,
     content: value,
+    children: null
   };
 
   if (isOpenGraph) {
@@ -29,7 +30,7 @@ const renderTag = (key, value) => {
 
   const type = isTitle ? "title" : "meta";
   const props = !isTitle ? { ...assembleProps(key, value) } : { ...titleProps };
-  const children = isTitle && value;
+  const children = isTitle ? value : null;
 
   return createElement(type, props, children);
 };
@@ -59,7 +60,7 @@ const generateOpenGraphKeys = (meta) => {
   return obj;
 };
 
-export const appendTags = (meta) => {
+export const createTags = (meta) => {
   const tags = [];
 
   const generatedKeys = generateOpenGraphKeys(meta);
