@@ -1,7 +1,19 @@
 import { createElement } from "react";
 import { formatValue } from "./formatValue";
+import Placeholder from "../assets/default.png";
 
-const trimKey = (key, value) => `${key}-${value}`.replace(/\s+/g, '');
+const trimKey = (key, value) => `${key}-${value}`.replace(/\s+/g, "");
+
+const formatMetaKeys = (meta) => {
+  const obj = {};
+
+  Object.keys(meta).forEach((key) => {
+    const formatted = key.replace(/\s+/g, "");
+    obj[formatted] = meta[key];
+  });
+
+  return obj;
+};
 
 const assembleProps = (key, value) => {
   const isOpenGraph = key.includes("og:");
@@ -10,7 +22,7 @@ const assembleProps = (key, value) => {
   const props = {
     key: trimmed,
     content: value,
-    children: null
+    children: null,
   };
 
   if (isOpenGraph) {
@@ -25,7 +37,7 @@ const assembleProps = (key, value) => {
 const renderTag = (key, value) => {
   const isTitle = key === "title";
   const titleProps = {
-    key: trimKey(key, value)
+    key: trimKey(key, value),
   };
 
   const type = isTitle ? "title" : "meta";
@@ -40,56 +52,93 @@ const generateOpenGraphKeys = (meta) => {
 
   Object.keys(meta).forEach((key) => {
     const isOpenGraph = key.includes("og:");
-    const openGraphKey = !isOpenGraph ? formatValue(key, true) : key
+    const requiredTags = ["title", "description", "image", "url", "type"];
 
-    if (isOpenGraph) {
-      const keyToOverwrite = key.split("og:")[1];
-      const isKeyIncluded = keyToOverwrite in obj;
+    if (isOpenGraph || !requiredTags.includes(key)) return;
 
-      if (isKeyIncluded) {
-        obj[keyToOverwrite] = meta[openGraphKey];
-        obj[openGraphKey] = meta[openGraphKey];
-      }
-
-      return;
-    }
-
+    const openGraphKey = `og:${key}`;
     obj[openGraphKey] = meta[key];
   });
 
   return obj;
 };
 
+const generateTagFallbacks = (key, content, generatedKeys, tags) => {
+  const openGraphKey = formatValue(key, true);
+  const hasOpenGraph = openGraphKey in generatedKeys;
+
+  if (!hasOpenGraph) {
+    const openGraphTag = renderTag(openGraphKey, content);
+    tags.push(openGraphTag);
+  }
+
+  return;
+};
+
 export const createTags = (meta) => {
   const tags = [];
+  const formattedMeta = { ...formatMetaKeys(meta) };
 
-  const generatedKeys = generateOpenGraphKeys(meta);
-  const hasOpenGraphImage = "og:image" in generatedKeys;
+  // Create new object that contains only meta information. Generate new open graph tags from those meta values. 
 
-  Object.keys(generatedKeys).forEach((key) => {
-    const value = generatedKeys[key];
-    const isUrl = key === "url";
+  const filtered = Object.entries(formattedMeta).filter(([key]) => {
+    return !key.includes("og:");
+  });
 
-    if (value === "" || isUrl) return;
+  const metaTags = Object.fromEntries(filtered);
+  const generatedKeys = generateOpenGraphKeys(metaTags);
 
-    const tag = renderTag(key, value);
-    tags.push(tag);
+  // Check if any open graph tags from the original meta object exist as a generated key.
+  // If that key exists, overwrite its value with what was set in the original meta object. 
+
+  Object.keys(formattedMeta).forEach((key) => {
+    const isOpenGraph = key.includes("og:");
+
+    if (isOpenGraph) {
+      const isKeyIncluded = key in generatedKeys;
+
+      if (isKeyIncluded) {
+        const keyToOverwrite = key.split("og:")[1];
+
+        generatedKeys[key] = formattedMeta[key];
+        generatedKeys[keyToOverwrite] = formattedMeta[key];
+      }
+    }
 
     return;
   });
 
-  if (!hasOpenGraphImage) {
-    const logo = "insert path to logo here";
-    const openGraphImageTag = renderTag("og:image", logo);
+  // Append any remaining custom open graph keys passed from original meta object to generated keys if it does not exist. 
 
-    tags.push(openGraphImageTag);
-  }
+  Object.keys(formattedMeta).forEach((key) => {
+    const isOpenGraph = key.includes("og:");
+    const isKeyIncluded = key in generatedKeys;
 
-  const openGraphTypeTag = renderTag('og:type', 'website');
+    if (isOpenGraph && !isKeyIncluded) {
+      generatedKeys[key] = formattedMeta[key];
+    }
 
-  tags.push(openGraphTypeTag);
+    return;
+  });
 
-  console.log(tags, 'tags')
+  // Create tags from generated keys.
+
+  Object.keys(generatedKeys).forEach((key) => {
+    const value = generatedKeys[key];
+
+    if (value === "") return;
+
+    const tag = renderTag(key, value);
+    tags.push(tag);
+  });
+
+  // Create tags for Image and Type if a custom key is not passed from the page 
+
+  const openGraphImageContent = Placeholder.src;
+  const openGraphTypeContent = "website";
+
+  generateTagFallbacks("image", openGraphImageContent, generatedKeys, tags);
+  generateTagFallbacks("type", openGraphTypeContent, generatedKeys, tags);
 
   return tags;
 };

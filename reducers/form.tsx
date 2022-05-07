@@ -27,7 +27,7 @@ export const initialState = {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD_TAG": {
+    case "HANDLE_ADD_TAG": {
       const { payload } = action;
       const { property, content } = payload;
 
@@ -50,7 +50,18 @@ export const reducer = (state, action) => {
         content: "",
       };
     } break;
+    case "HANDLE_DELETE_TAG": {
 
+      const tagsArr = [...state.tags]
+      const deletedIndex = tagsArr.findIndex(tag => tag.property === action.property);
+
+      tagsArr.splice(deletedIndex, 1);
+
+      return {
+        ...state,
+        tags: tagsArr
+      };
+    } break;
     case "HANDLE_USER_INPUT": {
       const { event } = action;
       const { name, value } = event.target;
@@ -88,7 +99,7 @@ export const reducer = (state, action) => {
       const meta = {
         title,
         description,
-        url,
+       "og:url": url,
         ...setTags(tags),
       };
 

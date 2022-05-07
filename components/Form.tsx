@@ -19,11 +19,11 @@ const Form = ({ state, dispatch }) => {
   const options = state.options.map((option) => (
     <Option key={option} option={option} />
   ));
-  const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} />);
+  const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} dispatch={dispatch} />);
 
   const isEmpty = !state.tags.length;
   const isEmptyModifier = isEmpty ? "tag-container--empty" : "";
-  const hasSubmitModifier = isSubmitDisabled ? "form--disabled" : "";
+  const hasSubmitModifier = hasSubmit ? "form--disabled" : "";
 
   const tagContent = isEmpty ? (
     <>
@@ -108,7 +108,7 @@ const Form = ({ state, dispatch }) => {
       <button
         onClick={(e) =>
           dispatch({
-            type: "ADD_TAG",
+            type: "HANDLE_ADD_TAG",
             payload: { e, property: defaultValue, content },
           })
         }

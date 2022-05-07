@@ -4,9 +4,6 @@ body {
     background-color: var(--bg-primary);
     color: var(--font);
     font-family: "Inter", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     -webkit-font-smoothing: antialiased;
     margin: 0;
     min-height: 100vh;
@@ -14,10 +11,8 @@ body {
 
 body > div {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 24px;
-    max-width: 1000px;
-    align-items: center;
+    grid-gap: 24px;
+    padding: 0.75rem;
 }
 
 h1 {
@@ -45,9 +40,7 @@ h1, h2 {
      font-size: .9rem;
  }
 
- .content > .container {
-     max-width: 350px;
- }
+ /* Container Styles */ 
 
 .container {
     background-color: var(--bg-card);
@@ -62,32 +55,26 @@ h1, h2 {
     margin-bottom: 24px;
 }
 
-.container.container--skeleton h3, 
 .container.container--skeleton figcaption {
-    background-color: var(--bg-disabled);
+    background-color: #e0e0e0;
     background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
     background-size: 40px 100%;
     background-repeat: no-repeat;
     background-position: left -40px top 0;
 }
 
-.container.container--skeleton h3 {
-    min-height: 28px;
-    border-radius: 4px;
-    display: block;
-}
-
 .container.container--skeleton figcaption {
-    min-height: 72px;
+    min-height: 56px;
     border-radius: 4px;
 }
 
 .description {
-    padding: 0 16px;
     text-align: center;
     max-width: 450px;
     margin: 0 auto;
 }
+
+/* Form Styles */ 
 
 .form-item {
     display: flex;
@@ -134,8 +121,8 @@ h1, h2 {
 
 .form-item.form-item--submit > input:first-of-type[disabled] {
     background-color: transparent;
-    color: #c7d1d6;
-    border: 1px solid #c7d1d6;
+    color: var(--disabled);
+    border: 1px solid var(--disabled);
 }
 
 .form-item .form-submit {
@@ -172,7 +159,7 @@ form button {
 form button[disabled] {
     cursor: initial;
     pointer-events: none;
-    color: #c7d1d6;
+    color: var(--disabled);
     background-color: transparent;
 }
 
@@ -188,6 +175,8 @@ form button {
     background-color: transparent;
 }
 
+/* Tag Styles */ 
+
 .tag-container {
     background-color: #c5c7e20f;
     padding: 1rem 0.5rem;
@@ -197,6 +186,8 @@ form button {
     min-height: 28px;
     display: flex;
     align-items: center;
+    max-width: 520px;
+    overflow-x: auto;
 }
 
 .tag-container.tag-container--empty {
@@ -207,7 +198,7 @@ form button {
     display: block;
     font-size: 1.5rem;
     margin-bottom: 8px;
-    color: var(--primary);
+    color: var(--accent);
 }
 
 .tag-container.tag-container--empty > p {
@@ -235,8 +226,10 @@ form button {
 .tag > svg {
     margin: 0 8px 0 0;
     font-size: 1.15rem;
-    color: var(--primary);
+    color: var(--accent);
 }
+
+/* Preview Styles */ 
 
 .preview {
     margin: 0 auto;
@@ -270,6 +263,8 @@ form button {
     font-size: .75rem;
 }
 
+/* Generated Styles */ 
+
 .generated {
     margin: 1rem 0;
 }
@@ -297,4 +292,8 @@ form button {
 
 .token.attr-value {
     color: #fff !important;
+}
+
+#zeit-ui-clipboard {
+    display: none;
 }

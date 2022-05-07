@@ -1,0 +1,13 @@
+@media (min-width: 768px) {
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    body > div {
+        grid-template-columns: 3fr 2fr;
+        max-width: 1000px;
+        align-items: center;
+    }
+}

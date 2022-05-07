@@ -10,7 +10,7 @@ const Generated = ({ state }) => {
       <h2>Code</h2>
       <p>
         Copy and paste the following tags into the <strong>head</strong> of your
-        document:{" "}
+        document once your tags are generated:{" "}
       </p>
       <div className="generated">
         <CopyBlock
