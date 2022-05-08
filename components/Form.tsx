@@ -1,35 +1,38 @@
 import React from "react";
 import Option from "./Option";
 import Tag from "./Tag";
-import { TagProps } from "../types/components";
+import { FormProps, TagProps } from "../types/components";
+import { OptionKeys } from "../types/state";
 import { formatValue } from "../helpers/formatValue";
 import { AiOutlineTags } from "react-icons/ai";
-import { OptionKeys } from "../types/state";
 
-const Form = ({ state, dispatch }) => {
-  const { title, description, url, property, content, hasSubmit } = state;
-
-  const initialValue = state.options[0];
+const Form = ({
+  title,
+  description,
+  url,
+  tags,
+  options,
+  property,
+  content,
+  hasSubmit,
+  dispatch,
+}: FormProps) => {
+  const initialValue = options[0];
   const defaultValue = !property ? formatValue(initialValue, true) : property;
 
   const isAddDisabled = !(defaultValue && content) || hasSubmit;
   const isResetDisabled =
-    !title &&
-    !description &&
-    !url &&
-    !property &&
-    !content &&
-    !state.tags.length;
-  const isSubmitDisabled = !(title && url && state.tags.length) || hasSubmit;
+    !title && !description && !url && !property && !content && !tags.length;
+  const isSubmitDisabled = !(title && url && tags.length) || hasSubmit;
 
-  const options = state.options.map(
+  const renderOptions = options.map(
     (option: OptionKeys): JSX.Element => <Option key={option} option={option} />
   );
-  const tags = state.tags.map((tag: TagProps) => (
+  const renderTags = tags.map((tag: TagProps) => (
     <Tag key={tag.property} {...tag} dispatch={dispatch} />
   ));
 
-  const isEmpty = !state.tags.length;
+  const isEmpty = !tags.length;
   const isEmptyModifier = isEmpty ? "tag-container--empty" : "";
   const hasSubmitModifier = hasSubmit ? "form--disabled" : "";
 
@@ -39,7 +42,7 @@ const Form = ({ state, dispatch }) => {
       <p>You have not added any tags yet.</p>
     </>
   ) : (
-    tags
+    renderTags
   );
 
   return (
@@ -52,7 +55,9 @@ const Form = ({ state, dispatch }) => {
         <input
           id="title"
           name="title"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
+          onChange={(event) =>
+            dispatch({ type: "HANDLE_USER_INPUT", payload: event })
+          }
           type="text"
           value={title}
           disabled={hasSubmit}
@@ -66,7 +71,9 @@ const Form = ({ state, dispatch }) => {
         <input
           id="description"
           name="description"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
+          onChange={(event) =>
+            dispatch({ type: "HANDLE_USER_INPUT", payload: event })
+          }
           type="text"
           value={description}
           disabled={hasSubmit}
@@ -80,7 +87,9 @@ const Form = ({ state, dispatch }) => {
         <input
           id="url"
           name="url"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
+          onChange={(event) =>
+            dispatch({ type: "HANDLE_USER_INPUT", payload: event })
+          }
           type="url"
           value={url}
           disabled={hasSubmit}
@@ -95,16 +104,20 @@ const Form = ({ state, dispatch }) => {
           <select
             id="property"
             name="property"
-            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
+            onChange={(event) =>
+              dispatch({ type: "HANDLE_USER_INPUT", payload: event })
+            }
             value={defaultValue}
             disabled={hasSubmit}
           >
-            <>{options}</>
+            <>{renderOptions}</>
           </select>
           <input
             id="content"
             name="content"
-            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
+            onChange={(event) =>
+              dispatch({ type: "HANDLE_USER_INPUT", payload: event })
+            }
             placeholder="Value that will be set as the content of the tag."
             type="text"
             value={content}

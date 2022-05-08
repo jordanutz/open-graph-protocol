@@ -1,12 +1,28 @@
-import { ReactElement } from "react";
-import { OptionKeys } from "./state";
+import { OptionKeys, StateProps } from "./state";
+
+type DispatchProps = {
+    type: string;
+    payload?: any;
+}
+
+export interface FormProps extends StateProps {
+    dispatch: ({type, payload}: DispatchProps)  => void 
+};
 
 export interface GeneratedProps {
-    generatedTags: ReactElement[];
+    generatedTags: string;
 };
 
 export interface OptionProps {
     option: OptionKeys
+};
+
+export interface PreviewProps {
+    title: string; 
+    description: string;
+    url: string; 
+    tags: Tag[];
+    hasSubmit: boolean
 };
 
 export interface Tag {
@@ -15,13 +31,5 @@ export interface Tag {
 };
 
 export interface TagProps extends Tag {
-    dispatch: ({ type: string, payload: unknown }) => void
-};
-
-export interface PreviewProps {
-    title: string; 
-    description: string;
-    url: string; 
-    tags: TagProps[];
-    hasSubmit: boolean
+    dispatch: ({type, payload}: DispatchProps)  => void 
 };

@@ -9,7 +9,7 @@ import { initialState, reducer } from "../reducers";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { title, description, url, tags, hasSubmit, generatedTags } = state;
+  const { generatedTags } = state;
 
   return (
     <>
@@ -26,16 +26,10 @@ const App = () => {
             inject into the head of your document. Let&apos;s give it a shot!
           </p>
         </div>
-        <Form state={state} dispatch={dispatch} />
+        <Form {...state} dispatch={dispatch} />
       </section>
       <div className="content">
-        <Preview 
-          title={title} 
-          description={description} 
-          url={url}
-          tags={tags} 
-          hasSubmit={hasSubmit} 
-        />
+        <Preview {...state} />
         <Generated generatedTags={generatedTags} />
       </div>
     </>

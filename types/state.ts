@@ -10,11 +10,10 @@ export type OptionKeys =
   | "Title"
   | "Video";
 
-export interface StateProps extends GeneratedProps, PreviewProps, Tag {
-  options: OptionKeys[];
-};
-
 export interface ActionProps {
   type: string;
   payload: any;
+};
+export interface StateProps extends GeneratedProps, PreviewProps, Tag {
+  options: OptionKeys[];
 };

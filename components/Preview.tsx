@@ -1,13 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import Placeholder from "../assets/default.png";
-import { PreviewProps, TagProps } from "../types/components";
+import { PreviewProps, Tag } from "../types/components";
 
 const Preview = ({ title, description, url, tags, hasSubmit }: PreviewProps) => {
   const imageTag =
     tags.length &&
     hasSubmit &&
-    tags.find((tag: TagProps) => tag.property === "og:image");
+    tags.find((tag: Tag) => tag.property === "og:image");
   const domain =
     tags.length && hasSubmit ? new URL(url).hostname : null;
   const content = hasSubmit ? (
