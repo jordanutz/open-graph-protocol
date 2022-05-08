@@ -1,32 +1,32 @@
 import React from "react";
 import Image from "next/image";
-
 import Placeholder from "../assets/default.png";
+import { PreviewProps, TagProps } from "../types/components";
 
-const Preview = ({ state }) => {
+const Preview = ({ title, description, url, tags, hasSubmit }: PreviewProps) => {
   const imageTag =
-    state.tags.length &&
-    state.hasSubmit &&
-    state.tags.find((tag) => tag.property === "og:image");
+    tags.length &&
+    hasSubmit &&
+    tags.find((tag: TagProps) => tag.property === "og:image");
   const domain =
-    state.tags.length && state.hasSubmit ? new URL(state.url).hostname : null;
-  const content = state.hasSubmit ? (
+    tags.length && hasSubmit ? new URL(url).hostname : null;
+  const content = hasSubmit ? (
     <section className="container container--preview">
       <h2>Preview</h2>
       <figure className="preview">
         <div className="preview-img">
           <Image
             src={imageTag ? imageTag.content : Placeholder.src}
-            alt={state.title}
+            alt={title}
             layout="fill"
             unoptimized={true}
             priority
           />
         </div>
         <div className="preview-details">
-          <h3>{state.title}</h3>
-          <figcaption>{state.description}</figcaption>
-          <a href={state.url} target="_blank" rel="noreferrer">
+          <h3>{title}</h3>
+          <figcaption>{description}</figcaption>
+          <a href={url} target="_blank" rel="noreferrer">
             {domain}
           </a>
         </div>

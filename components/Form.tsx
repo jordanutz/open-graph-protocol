@@ -1,8 +1,10 @@
 import React from "react";
 import Option from "./Option";
 import Tag from "./Tag";
+import { TagProps } from "../types/components";
 import { formatValue } from "../helpers/formatValue";
 import { AiOutlineTags } from "react-icons/ai";
+import { OptionKeys } from "../types/state";
 
 const Form = ({ state, dispatch }) => {
   const { title, description, url, property, content, hasSubmit } = state;
@@ -12,14 +14,20 @@ const Form = ({ state, dispatch }) => {
 
   const isAddDisabled = !(defaultValue && content) || hasSubmit;
   const isResetDisabled =
-    !title && !description && !url && !property && !content && !state.tags.length;
-  const isSubmitDisabled =
-    !(title && url && state.tags.length) || hasSubmit;
+    !title &&
+    !description &&
+    !url &&
+    !property &&
+    !content &&
+    !state.tags.length;
+  const isSubmitDisabled = !(title && url && state.tags.length) || hasSubmit;
 
-  const options = state.options.map((option) => (
-    <Option key={option} option={option} />
+  const options = state.options.map(
+    (option: OptionKeys): JSX.Element => <Option key={option} option={option} />
+  );
+  const tags = state.tags.map((tag: TagProps) => (
+    <Tag key={tag.property} {...tag} dispatch={dispatch} />
   ));
-  const tags = state.tags.map((tag) => <Tag key={tag.property} {...tag} dispatch={dispatch} />);
 
   const isEmpty = !state.tags.length;
   const isEmptyModifier = isEmpty ? "tag-container--empty" : "";
@@ -122,7 +130,7 @@ const Form = ({ state, dispatch }) => {
           value="Clear"
           className="form-submit"
           disabled={isResetDisabled}
-          onClick={() => dispatch({ type: 'HANDLE_RESET' })}
+          onClick={() => dispatch({ type: "HANDLE_RESET" })}
           required
         />
         <input

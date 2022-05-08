@@ -5,11 +5,11 @@ import Form from "../components/Form";
 import Generated from "../components/Generated";
 import Preview from "../components/Preview";
 
-import { initialState, reducer } from "../reducers/form";
+import { initialState, reducer } from "../reducers";
 
 const App = () => {
-
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { title, description, url, tags, hasSubmit, generatedTags } = state;
 
   return (
     <>
@@ -29,8 +29,14 @@ const App = () => {
         <Form state={state} dispatch={dispatch} />
       </section>
       <div className="content">
-        <Preview state={state} />
-        <Generated state={state} />
+        <Preview 
+          title={title} 
+          description={description} 
+          url={url}
+          tags={tags} 
+          hasSubmit={hasSubmit} 
+        />
+        <Generated generatedTags={generatedTags} />
       </div>
     </>
   );
