@@ -70,20 +70,21 @@ export const reducer = (state: StateProps, action: ActionProps) => {
         };
       }
       break;
-    case "HANDLE_USER_INPUT": {
-        const { event } = action.payload;
-        const { name, value } = event.target;
+    case "HANDLE_USER_INPUT":
+      {
+        const { payload } = action;
+        const { target } = payload;
 
-        return { ...state, [name]: value };
+        return { ...state, [target.name]: target.value };
       }
       break;
 
     case "HANDLE_SUBMIT":
       {
-        const { event } = action.payload;
+        const { payload } = action;
         const { tags, title, description, url } = state;
 
-        event.preventDefault();
+        payload.preventDefault();
 
         const setTags = (tags: TagProps[]) => {
           let metaTags = {};

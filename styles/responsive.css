@@ -10,4 +10,8 @@
         max-width: 1000px;
         align-items: center;
     }
+
+    .content > .container {
+        max-width: 350px;
+    }
 }
