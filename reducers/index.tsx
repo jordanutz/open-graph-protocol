@@ -4,7 +4,8 @@ import { createTags } from "../helpers/createTags";
 import { filterOptions } from "../helpers/filterOptions";
 import { formatValue } from "../helpers/formatValue";
 
-import { StateProps } from "../types/state";
+import { TagProps } from "../types/components";
+import { ActionProps, StateProps } from "../types/state";
 
 export const initialState: StateProps = {
   title: "",
@@ -27,7 +28,7 @@ export const initialState: StateProps = {
   hasSubmit: false,
 };
 
-export const reducer = (state: StateProps, action) => {
+export const reducer = (state: StateProps, action: ActionProps) => {
   switch (action.type) {
     case "HANDLE_ADD_TAG":
       {
@@ -69,9 +70,8 @@ export const reducer = (state: StateProps, action) => {
         };
       }
       break;
-    case "HANDLE_USER_INPUT":
-      {
-        const { event } = action;
+    case "HANDLE_USER_INPUT": {
+        const { event } = action.payload;
         const { name, value } = event.target;
 
         return { ...state, [name]: value };
@@ -80,15 +80,15 @@ export const reducer = (state: StateProps, action) => {
 
     case "HANDLE_SUBMIT":
       {
-        const { event } = action;
+        const { event } = action.payload;
         const { tags, title, description, url } = state;
 
         event.preventDefault();
 
-        const setTags = (tags) => {
+        const setTags = (tags: TagProps[]) => {
           let metaTags = {};
 
-          tags.forEach((tag) => {
+          tags.forEach((tag: TagProps) => {
             const { property, content } = tag;
             metaTags = { ...metaTags, [property]: content };
           });
@@ -104,7 +104,7 @@ export const reducer = (state: StateProps, action) => {
         };
 
         const generatedTags = createTags(meta)
-          .map((tag) => ReactDOMServer.renderToString(tag))
+          .map((tag: TagProps) => ReactDOMServer.renderToString(tag))
           .toString()
           .replace(/,/g, "\n");
 

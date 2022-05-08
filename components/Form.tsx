@@ -44,7 +44,7 @@ const Form = ({ state, dispatch }) => {
 
   return (
     <form
-      onSubmit={(event) => dispatch({ type: "HANDLE_SUBMIT", event })}
+      onSubmit={(event) => dispatch({ type: "HANDLE_SUBMIT", payload: event })}
       className={hasSubmitModifier}
     >
       <div className="form-item">
@@ -52,7 +52,7 @@ const Form = ({ state, dispatch }) => {
         <input
           id="title"
           name="title"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
           type="text"
           value={title}
           disabled={hasSubmit}
@@ -66,7 +66,7 @@ const Form = ({ state, dispatch }) => {
         <input
           id="description"
           name="description"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
           type="text"
           value={description}
           disabled={hasSubmit}
@@ -80,7 +80,7 @@ const Form = ({ state, dispatch }) => {
         <input
           id="url"
           name="url"
-          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+          onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
           type="url"
           value={url}
           disabled={hasSubmit}
@@ -95,7 +95,7 @@ const Form = ({ state, dispatch }) => {
           <select
             id="property"
             name="property"
-            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
             value={defaultValue}
             disabled={hasSubmit}
           >
@@ -104,7 +104,7 @@ const Form = ({ state, dispatch }) => {
           <input
             id="content"
             name="content"
-            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", event })}
+            onChange={(event) => dispatch({ type: "HANDLE_USER_INPUT", payload: event })}
             placeholder="Value that will be set as the content of the tag."
             type="text"
             value={content}
