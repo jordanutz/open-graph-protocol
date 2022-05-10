@@ -4,7 +4,7 @@ import { createTags } from "../helpers/createTags";
 import { filterOptions } from "../helpers/filterOptions";
 import { formatValue } from "../helpers/formatValue";
 
-import { TagProps } from "../types/components";
+import { Tag, TagProps } from "../types/components";
 import { ActionProps, StateProps } from "../types/state";
 
 export const initialState: StateProps = {
@@ -86,10 +86,10 @@ export const reducer = (state: StateProps, action: ActionProps) => {
 
         payload.preventDefault();
 
-        const setTags = (tags: TagProps[]) => {
+        const setTags = (tags: Tag[]) => {
           let metaTags = {};
 
-          tags.forEach((tag: TagProps) => {
+          tags.forEach((tag: Tag) => {
             const { property, content } = tag;
             metaTags = { ...metaTags, [property]: content };
           });

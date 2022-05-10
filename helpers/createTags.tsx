@@ -1,13 +1,16 @@
-import { createElement } from "react";
+import { createElement, ReactNode } from "react";
 import { formatValue } from "./formatValue";
+import { MetaKeys, GeneratedKeys } from "../types/helpers";
+
 import Placeholder from "../assets/default.png";
 
-const trimKey = (key, value) => `${key}-${value}`.replace(/\s+/g, "");
+const trimKey = (key: string, value: string): string =>
+  `${key}-${value}`.replace(/\s+/g, "");
 
-const formatMetaKeys = (meta) => {
+const formatMetaKeys = (meta: MetaKeys[]) => {
   const obj = {};
 
-  Object.keys(meta).forEach((key) => {
+  Object.keys(meta).forEach((key: MetaKeys) => {
     const formatted = key.replace(/\s+/g, "");
     obj[formatted] = meta[key];
   });
@@ -15,7 +18,7 @@ const formatMetaKeys = (meta) => {
   return obj;
 };
 
-const assembleProps = (key, value) => {
+const assembleProps = (key: MetaKeys, value: string) => {
   const isOpenGraph = key.includes("og:");
   const trimmed = trimKey(key, value);
 
@@ -34,7 +37,7 @@ const assembleProps = (key, value) => {
   return props;
 };
 
-const renderTag = (key, value) => {
+const renderTag = (key: MetaKeys, value: string): ReactNode => {
   const isTitle = key === "title";
   const titleProps = {
     key: trimKey(key, value),
@@ -47,7 +50,7 @@ const renderTag = (key, value) => {
   return createElement(type, props, children);
 };
 
-const generateOpenGraphKeys = (meta) => {
+const generateOpenGraphKeys = (meta: GeneratedKeys): GeneratedKeys => {
   const obj = { ...meta };
 
   Object.keys(meta).forEach((key) => {
@@ -63,8 +66,13 @@ const generateOpenGraphKeys = (meta) => {
   return obj;
 };
 
-const generateTagFallbacks = (key, content, generatedKeys, tags) => {
-  const openGraphKey = formatValue(key, true);
+const generateTagFallbacks = (
+  key: string,
+  content: string,
+  generatedKeys,
+  tags: ReactNode[]
+): void => {
+  const openGraphKey = formatValue(key as MetaKeys, true) as MetaKeys;
   const hasOpenGraph = openGraphKey in generatedKeys;
 
   if (!hasOpenGraph) {
@@ -75,21 +83,21 @@ const generateTagFallbacks = (key, content, generatedKeys, tags) => {
   return;
 };
 
-export const createTags = (meta) => {
+export const createTags = (meta: MetaKeys[]) => {
   const tags = [];
   const formattedMeta = { ...formatMetaKeys(meta) };
 
-  // Create new object that contains only meta information. Generate new open graph tags from those meta values. 
+  // Create new object that contains only meta information. Generate new open graph tags from those meta values.
 
   const filtered = Object.entries(formattedMeta).filter(([key]) => {
     return !key.includes("og:");
   });
 
-  const metaTags = Object.fromEntries(filtered);
+  const metaTags = Object.fromEntries(filtered) as { [key: string]: string };
   const generatedKeys = generateOpenGraphKeys(metaTags);
 
   // Check if any open graph tags from the original meta object exist as a generated key.
-  // If that key exists, overwrite its value with what was set in the original meta object. 
+  // If that key exists, overwrite its value with what was set in the original meta object.
 
   Object.keys(formattedMeta).forEach((key) => {
     const isOpenGraph = key.includes("og:");
@@ -108,7 +116,7 @@ export const createTags = (meta) => {
     return;
   });
 
-  // Append any remaining custom open graph keys passed from original meta object to generated keys if it does not exist. 
+  // Append any remaining custom open graph keys passed from original meta object to generated keys if it does not exist.
 
   Object.keys(formattedMeta).forEach((key) => {
     const isOpenGraph = key.includes("og:");
@@ -123,7 +131,7 @@ export const createTags = (meta) => {
 
   // Create tags from generated keys.
 
-  Object.keys(generatedKeys).forEach((key) => {
+  Object.keys(generatedKeys).forEach((key: MetaKeys) => {
     const value = generatedKeys[key];
 
     if (value === "") return;
@@ -132,7 +140,7 @@ export const createTags = (meta) => {
     tags.push(tag);
   });
 
-  // Create tags for Image and Type if a custom key is not passed from the page 
+  // Create tags for Image and Type if a custom key is not passed from the page
 
   const openGraphImageContent = Placeholder.src;
   const openGraphTypeContent = "website";
