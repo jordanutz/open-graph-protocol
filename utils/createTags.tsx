@@ -83,7 +83,7 @@ const generateTagFallbacks = (
   return;
 };
 
-export const createTags = (meta: MetaKeys[]) => {
+export const createTags = (meta: any) => {
   const tags = [];
   const formattedMeta = { ...formatMetaKeys(meta) };
 

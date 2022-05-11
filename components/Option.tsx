@@ -1,5 +1,5 @@
 import React from "react";
-import { formatValue } from "../helpers/formatValue";
+import { formatValue } from "../utils/formatValue";
 import { OptionProps } from "../types/components"
 
 const Option = ({ option }: OptionProps): JSX.Element => {

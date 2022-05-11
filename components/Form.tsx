@@ -3,7 +3,7 @@ import Option from "./Option";
 import Tag from "./Tag";
 import { FormProps, TagProps } from "../types/components";
 import { OptionKeys } from "../types/state";
-import { formatValue } from "../helpers/formatValue";
+import { formatValue } from "../utils/formatValue";
 import { AiOutlineTags } from "react-icons/ai";
 
 const Form = ({
