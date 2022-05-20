@@ -23,4 +23,4 @@
 
 ## Live Demo
 
-[CodeSandbox](https://codesandbox.io/s/open-tag-generator-mmprk7)
+[CodeSandbox](https://codesandbox.io/s/github/jordanutz/open-graph-protocol)
