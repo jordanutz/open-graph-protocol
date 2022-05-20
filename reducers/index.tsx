@@ -1,10 +1,11 @@
+import { ReactElement } from "react";
 import ReactDOMServer from "react-dom/server";
 
-import { createTags } from "../utils/createTags";
+import { renderMeta } from "../utils/renderMeta";
 import { filterOptions } from "../utils/filterOptions";
 import { formatValue } from "../utils/formatValue";
 
-import { Tag, TagProps } from "../types/components";
+import { Tag } from "../types/components";
 import { ActionProps, StateProps } from "../types/state";
 
 export const initialState: StateProps = {
@@ -104,8 +105,9 @@ export const reducer = (state: StateProps, action: ActionProps) => {
           ...setTags(tags),
         };
 
-        const generatedTags = createTags(meta)
-          .map((tag: TagProps) => ReactDOMServer.renderToString(tag) + "\n").join('');
+        const generatedTags = renderMeta(meta)
+          .map((tag: ReactElement) => ReactDOMServer.renderToString(tag) + "\n")
+          .join("");
 
         return {
           ...state,
