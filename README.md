@@ -23,4 +23,4 @@
 
 ## Live Demo
 
-[Codepen](https://codepen.io/jordanutz/pen/KKZjwPe)
+[CodeSandbox](https://codesandbox.io/s/open-tag-generator-mmprk7)
