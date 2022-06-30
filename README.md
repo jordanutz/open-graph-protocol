@@ -1,6 +1,6 @@
 ![alt text](https://i.ibb.co/JCpbbB8/Screen-Shot-2022-06-29-at-6-41-31-PM.png)
 
-# Open Tag Generator
+# Open Graph Tag Generator
 
 - Application that dynamically generates Open Graph keys using information derived from custom meta keys.
 
